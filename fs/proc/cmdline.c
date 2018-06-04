@@ -3,9 +3,12 @@
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 
+
+
 static int cmdline_proc_show(struct seq_file *m, void *v)
 {
 	seq_printf(m, "%s\n", saved_command_line);
+
 	return 0;
 }
 
