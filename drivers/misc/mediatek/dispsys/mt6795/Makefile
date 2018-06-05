@@ -58,7 +58,7 @@ ifeq ($(CONFIG_MMPROFILE),y)
 ccflags-y += -DDEFAULT_MMP_ENABLE
 endif
 
-ifeq ($(CONFIG_MTK_MIRAVISION_SUPPORT), yes)
+ifeq ($(MTK_MIRAVISION_SUPPORT), yes)
     ccflags-y += -DCONFIG_FOR_SOURCE_PQ
 endif
 
