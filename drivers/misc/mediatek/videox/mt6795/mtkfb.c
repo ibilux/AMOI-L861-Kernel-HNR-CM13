@@ -1292,7 +1292,7 @@ static int mtkfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg
 	case MTKFB_POWERON:
    	{
 		MTKFB_FUNC();
-			if (primary_display_is_alive()) {
+		if (primary_display_is_alive()) {
 			DISPMSG("[FB Driver] is still in MTKFB_POWERON!!!\n");
 			return r;
 		}

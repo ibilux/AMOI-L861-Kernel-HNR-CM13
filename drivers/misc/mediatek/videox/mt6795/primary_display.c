@@ -3296,7 +3296,7 @@ static void _ovl_fence_release_callback(uint32_t userdata)
             _cmdq_set_config_handle_dirty_mira(cmdq_handle);
             cmdqRecFlushAsyncCallback(cmdq_handle, NULL, 0);
             MMProfileLogEx(ddp_mmp_get_events()->primary_rdma_config, MMProfileFlagPulse, 0, decouple_rdma_config.address);
-            //cmdqRecDestroy(cmdq_handle);
+            cmdqRecDestroy(cmdq_handle); //
     	}else{
     	     ret = -1;
     	     DISPERR("fail to create cmdq\n");

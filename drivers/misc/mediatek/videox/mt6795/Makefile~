@@ -37,7 +37,7 @@ ifeq ($(CONFIG_MTK_GPU_SUPPORT), y)
 ccflags-y += -DHWGPU_SUPPORT
 endif
 
-ifeq ($(CONFIG_MTK_MIRAVISION_SUPPORT), yes)
+ifeq ($(MTK_MIRAVISION_SUPPORT), yes)
     ccflags-y += -DCONFIG_FOR_SOURCE_PQ
 endif
 

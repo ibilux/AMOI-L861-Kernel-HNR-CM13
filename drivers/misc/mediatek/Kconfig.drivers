@@ -1690,6 +1690,13 @@ config MTK_VIDEO_HEVC_SUPPORT
 	help
 	  This option is for HEVC playback/record feature
 
+config MTK_MIRAVISION_SUPPORT
+	bool "MTK_MIRAVISION_SUPPORT"
+	default y
+	help
+	  MIRAVISION Support
+	  display enhancement
+
 config MTK_AAL_SUPPORT
 	bool "MTK_AAL_SUPPORT"
 	help

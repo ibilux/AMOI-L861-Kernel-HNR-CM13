@@ -1703,7 +1703,7 @@ int _ioctl_wait_vsync(unsigned long arg)
 	{
 		dprec_done(&session_info->event_waitvsync, 0, 0);
 	}
-
+	
 	return (ret);
 }
 
