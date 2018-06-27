@@ -4715,7 +4715,7 @@ static int mt_clkmgr_debug_module_init(void)
 	
     mt_clkmgr_debug_init();
 
-#ifdef CONFIG_HAS_EARLYSUSPEND    
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)   
     register_early_suspend(&mt_clkmgr_early_suspend_handler);
 #endif
 

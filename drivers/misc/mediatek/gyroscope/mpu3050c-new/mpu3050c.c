@@ -1758,7 +1758,7 @@ static int mpu3000_i2c_probe(struct i2c_client *client, const struct i2c_device_
     }
 	#endif
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	obj->early_drv.level    = EARLY_SUSPEND_LEVEL_STOP_DRAWING - 2,
 	obj->early_drv.suspend  = mpu3000_early_suspend,
 	obj->early_drv.resume   = mpu3000_late_resume,    

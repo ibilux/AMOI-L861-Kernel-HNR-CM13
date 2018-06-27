@@ -37,8 +37,8 @@ int disp_helper_get_option_list(char* stringbuf, int buf_len);
 DISP_HELPER_STAGE disp_helper_get_stage(void);
 const char *disp_helper_stage_spy(void);
 
-void enable_screen_idle_switch_decouple();
-void disable_screen_idle_switch_decouple();
+void enable_screen_idle_switch_decouple(void);
+void disable_screen_idle_switch_decouple(void);
 
 
 

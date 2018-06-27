@@ -1164,7 +1164,7 @@ static int __init FDVT_driver_init(void)
         ret = -ENODEV;
         return ret;
     }
-    #ifdef CONFIG_HAS_EARLYSUSPEND
+    #if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     register_early_suspend(&FDVT_early_suspend_desc);
     #endif
 

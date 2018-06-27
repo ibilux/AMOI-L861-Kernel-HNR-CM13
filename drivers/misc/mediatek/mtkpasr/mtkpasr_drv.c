@@ -2443,7 +2443,9 @@ static int __init mtkpasr_init(void)
 			num_banks, num_ranks, mtkpasr_start_pfn, mtkpasr_end_pfn, mtkpasr_total_pfns);
 
 	/* Register early suspend/resume desc */
+	#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	register_early_suspend(&mtkpasr_early_suspend_desc);
+	#endif
 
 #ifdef CONFIG_PM
 	/* Register syscore_ops */

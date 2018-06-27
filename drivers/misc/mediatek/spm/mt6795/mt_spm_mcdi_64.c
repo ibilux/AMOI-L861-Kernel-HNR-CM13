@@ -888,9 +888,9 @@ int spm_mcdi_init(void)
 
 
     spm_idle_ver("spm mcdi driver callback register OK..\n");
-
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     register_early_suspend(&mtk_spm_mcdi_early_suspend_driver);
-
+#endif
     spm_idle_ver("spm mcdi driver early suspend callback register OK..\n");
 
     spm_set_mcdi_pcm_ver();

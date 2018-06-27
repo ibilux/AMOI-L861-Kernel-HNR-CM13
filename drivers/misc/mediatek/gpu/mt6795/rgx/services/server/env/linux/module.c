@@ -1106,7 +1106,7 @@ static int __init PVRCore_Init(void)
 	/* MTK MFG system entry */
 	MTKMFGSystemInit();
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	register_early_suspend(&PVRSRVEarlySuspendHandler);
 #endif
     

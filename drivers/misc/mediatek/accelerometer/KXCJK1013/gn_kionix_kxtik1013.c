@@ -2888,7 +2888,7 @@ struct acc_data_path data={0};
 #endif
 
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	obj->early_drv.level    = EARLY_SUSPEND_LEVEL_DISABLE_FB - 1,
 	obj->early_drv.suspend  = kxtik1013_early_suspend,
 	obj->early_drv.resume   = kxtik1013_late_resume,    

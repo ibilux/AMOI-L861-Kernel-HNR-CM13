@@ -3261,7 +3261,7 @@ static int stk3x1x_i2c_probe(struct i2c_client *client, const struct i2c_device_
 	}
 
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	obj->early_drv.level    = EARLY_SUSPEND_LEVEL_DISABLE_FB - 1,
 	obj->early_drv.suspend  = stk3x1x_early_suspend,
 	obj->early_drv.resume   = stk3x1x_late_resume,    

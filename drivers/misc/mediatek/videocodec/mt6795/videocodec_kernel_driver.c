@@ -2459,7 +2459,7 @@ static int __init vcodec_driver_init(void)
 
     MFV_LOGD("[VCODEC_DEBUG] vcodec_driver_init Done\n");
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     register_early_suspend(&vcodec_early_suspend_handler);
 #endif
 

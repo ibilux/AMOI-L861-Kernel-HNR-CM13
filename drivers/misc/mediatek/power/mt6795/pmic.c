@@ -7252,7 +7252,7 @@ static int __init pmic_mt_init(void)
         return ret;
     }
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     register_early_suspend(&pmic_early_suspend_desc);
 #endif
 

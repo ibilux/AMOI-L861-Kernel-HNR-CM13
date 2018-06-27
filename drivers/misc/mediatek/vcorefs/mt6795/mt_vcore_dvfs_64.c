@@ -1217,7 +1217,7 @@ static int __init vcorefs_module_init(void)
 		return r;
 	}
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	register_early_suspend(&vcorefs_earlysuspend_desc);	/* for Screen-Off DVFS */
 #endif
 

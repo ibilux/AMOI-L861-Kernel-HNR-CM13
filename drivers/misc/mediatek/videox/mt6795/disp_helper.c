@@ -67,11 +67,11 @@ static _is_normal_stage(void)
 }
 
 static int screen_idle_switch_decouple = 1;
-void enable_screen_idle_switch_decouple()
+void enable_screen_idle_switch_decouple(void)
 {
 	screen_idle_switch_decouple = 1;
 }
-void disable_screen_idle_switch_decouple()
+void disable_screen_idle_switch_decouple(void)
 {
 	screen_idle_switch_decouple = 0;
 }

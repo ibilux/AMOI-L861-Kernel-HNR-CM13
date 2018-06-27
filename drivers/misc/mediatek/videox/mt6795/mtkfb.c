@@ -2669,6 +2669,7 @@ static void mtkfb_shutdown(struct device *pdev)
 
 void mtkfb_clear_lcm(void)
 {
+
 #if 0
 	int i;
     unsigned int layer_status[DDP_OVL_LAYER_MUN]={0};
@@ -2699,7 +2700,7 @@ void mtkfb_clear_lcm(void)
 }
 
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
 static void mtkfb_early_suspend(struct early_suspend *h)
 {
 	int ret=0;
@@ -2735,7 +2736,7 @@ static int mtkfb_resume(struct device *pdev)
     return 0;
 }
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
 static void mtkfb_late_resume(struct early_suspend *h)
 {
 	int ret=0;
@@ -2839,7 +2840,7 @@ static struct platform_driver mtkfb_driver =
     },
 };
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
 static struct early_suspend mtkfb_early_suspend_handler =
 {
 	.level = EARLY_SUSPEND_LEVEL_DISABLE_FB,
@@ -2887,7 +2888,7 @@ int __init mtkfb_init(void)
 		goto exit;
 	}
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
 	register_early_suspend(&mtkfb_early_suspend_handler);
 #endif
 	PanelMaster_Init();
@@ -2905,7 +2906,7 @@ static void __exit mtkfb_cleanup(void)
 
     platform_driver_unregister(&mtkfb_driver);
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
 	unregister_early_suspend(&mtkfb_early_suspend_handler);
 #endif
 

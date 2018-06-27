@@ -3703,7 +3703,7 @@ static int _mt_cpufreq_pdrv_probe(struct platform_device *pdev)
 #endif
 
 	/* register early suspend */
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
 	register_early_suspend(&_mt_cpufreq_early_suspend_handler);
 #endif
 

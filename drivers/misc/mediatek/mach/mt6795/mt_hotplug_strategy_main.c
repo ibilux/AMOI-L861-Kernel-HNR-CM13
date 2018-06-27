@@ -589,7 +589,7 @@ static int __init hps_init(void)
     if (r)
         hps_error("hps_procfs_init fail(%d)\n", r);
 
-#ifdef CONFIG_HAS_EARLYSUSPEND
+#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     register_early_suspend(&hps_ctxt.es_handler);
 #endif //#ifdef CONFIG_HAS_EARLYSUSPEND
 

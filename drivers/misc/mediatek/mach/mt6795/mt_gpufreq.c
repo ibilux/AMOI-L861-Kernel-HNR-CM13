@@ -2789,7 +2789,7 @@ static int mt_gpufreq_pdrv_probe(struct platform_device *pdev)
 
 	mt_gpufreq_dvfs_table_type = mt_gpufreq_check_dvfs_efuse();
 
-    #ifdef CONFIG_HAS_EARLYSUSPEND
+    #if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_EARLYSUSPEND)
     mt_gpufreq_early_suspend_handler.suspend = mt_gpufreq_early_suspend;
     mt_gpufreq_early_suspend_handler.resume = mt_gpufreq_late_resume;
     register_early_suspend(&mt_gpufreq_early_suspend_handler);
