@@ -252,8 +252,8 @@ static void __exit mtkfb_vsync_exit(void)
     VSYNC_INF("exit driver...\n");
 }
 
-module_init(mtkfb_vsync_init);
-module_exit(mtkfb_vsync_exit);
+//module_init(mtkfb_vsync_init);
+//module_exit(mtkfb_vsync_exit);
 
 MODULE_DESCRIPTION("MediaTek FB VSYNC Driver");
 MODULE_AUTHOR("Zaikuo Wang <Zaikuo.Wang@mediatek.com>");
