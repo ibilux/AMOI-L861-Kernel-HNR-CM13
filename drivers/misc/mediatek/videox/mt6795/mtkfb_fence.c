@@ -806,7 +806,7 @@ void mtkfb_release_fence(unsigned int session_id, unsigned int layer_id, int fen
 	int current_timeline_idx = 0;
 	int ion_release_count = 0;
 	
-	/* unsigned int current_ticket = dprec_get_vsync_count(); */
+	unsigned int current_ticket = dprec_get_vsync_count();
 	
 	disp_sync_info *layer_info = NULL;
 	disp_session_sync_info *session_info = NULL;

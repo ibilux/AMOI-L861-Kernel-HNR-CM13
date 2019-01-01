@@ -1922,7 +1922,6 @@ long mtk_disp_mgr_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	    case DISP_IOCTL_PQ_SET_BYPASS_COLOR:
 	    case DISP_IOCTL_PQ_SET_WINDOW:
 	    case DISP_IOCTL_OD_CTL:
-	    case DISP_IOCTL_WRITE_REG:
 	    case DISP_IOCTL_READ_REG:
 	    case DISP_IOCTL_MUTEX_CONTROL:
 	    case DISP_IOCTL_PQ_GET_TDSHP_FLAG:
@@ -2103,7 +2102,7 @@ static ssize_t mtk_disp_ld_set_rgb(struct device *dev,
 	return count;
 }
 
-// static DEVICE_ATTR(rgb, S_IRUGO | S_IWUSR | S_IWGRP, mtk_disp_ld_get_rgb, mtk_disp_ld_set_rgb);
+//static DEVICE_ATTR(rgb, S_IRUGO | S_IWUSR | S_IWGRP, mtk_disp_ld_get_rgb, mtk_disp_ld_set_rgb);
 static DEVICE_ATTR(rgb, S_IRUGO | S_IWUSR | S_IWGRP | S_IROTH | S_IWOTH, mtk_disp_ld_get_rgb, mtk_disp_ld_set_rgb);
 
 static void mtk_disp_rgb_work(struct work_struct *work) {
@@ -2114,7 +2113,8 @@ static void mtk_disp_rgb_work(struct work_struct *work) {
 
 	mutex_lock(&rgb_wq->lock);
 
-	gamma = kzalloc(sizeof(DISP_GAMMA_LUT_T), GFP_KERNEL);
+gamma = kzalloc(sizeof(DISP_GAMMA_LUT_T), GFP_KERNEL);
+if( gamma != -1){
 	gamma->hw_id = 0;
 	for (i = 0; i < 512; i++) {
 		gammutR = i * r / PROGRESSION_SCALE;
@@ -2123,10 +2123,14 @@ static void mtk_disp_rgb_work(struct work_struct *work) {
 
 		gamma->lut[i] = GAMMA_ENTRY(gammutR, gammutG, gammutB);
 	}
+	
+	msleep(50);
 
 	ret = primary_display_user_cmd(DISP_IOCTL_SET_GAMMALUT, (unsigned long)gamma);
+    
 
 	kfree(gamma);
+}
 	mutex_unlock(&rgb_wq->lock);
 }
 #endif

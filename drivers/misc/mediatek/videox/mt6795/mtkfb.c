@@ -168,7 +168,7 @@ extern BOOL is_lcm_in_suspend_mode;
 //  local function declarations
 // ---------------------------------------------------------------------------
 
-static int init_framebuffer(struct fb_info *info);
+
 static int mtkfb_get_overlay_layer_info(struct fb_overlay_layer_info* layerInfo);
 static int mtkfb_update_screen(struct fb_info *info);
 static void mtkfb_update_screen_impl(void);
@@ -1292,7 +1292,7 @@ static int mtkfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg
 	case MTKFB_POWERON:
    	{
 		MTKFB_FUNC();
-		if (primary_display_is_alive()) {
+			if (primary_display_is_alive()) {
 			DISPMSG("[FB Driver] is still in MTKFB_POWERON!!!\n");
 			return r;
 		}
@@ -1334,62 +1334,6 @@ static int mtkfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg
         return (r);
     }
 
-    case MTKFB_CAPTURE_FRAMEBUFFER:
-    {
-        unsigned int pbuf = 0;
-        if (copy_from_user(&pbuf, (void __user *)arg, sizeof(pbuf)))
-        {
-            MTKFB_LOG("[FB]: copy_from_user failed! line:%d \n", __LINE__);
-            r = -EFAULT;
-        }
-        else
-        {
-            dprec_logger_start(DPREC_LOGGER_WDMA_DUMP, 0, 0);
-            primary_display_capture_framebuffer_ovl(pbuf, eBGRA8888);
-            dprec_logger_done(DPREC_LOGGER_WDMA_DUMP, 0, 0);
-        }
-
-        return (r);
-    }
-
-    case MTKFB_SLT_AUTO_CAPTURE:
-    {
-        struct fb_slt_catpure capConfig;
-        if (copy_from_user(&capConfig, (void __user *)arg, sizeof(capConfig)))
-        {
-            MTKFB_LOG("[FB]: copy_from_user failed! line:%d \n", __LINE__);
-            r = -EFAULT;
-        }
-        else
-        {
-            unsigned int format;
-            switch (capConfig.format)
-            {
-            case MTK_FB_FORMAT_RGB888:
-                format = eRGB888;
-                break;
-            case MTK_FB_FORMAT_BGR888:
-                format = eBGR888;
-                break;
-            case MTK_FB_FORMAT_ARGB8888:
-                format = eARGB8888;
-                break;
-            case MTK_FB_FORMAT_RGB565:
-                format = eRGB565;
-                break;
-            case MTK_FB_FORMAT_UYVY:
-                format = eYUV_420_2P_UYVY;
-                break;
-            case MTK_FB_FORMAT_ABGR8888:
-            default:
-                format = eABGR8888;
-                break;
-            }
-				primary_display_capture_framebuffer_ovl((unsigned long)capConfig.outputBuffer, format);
-        }
-
-        return (r);
-    }
 
 #ifdef MTK_FB_OVERLAY_SUPPORT
         case MTKFB_GET_OVERLAY_LAYER_INFO:
@@ -1508,20 +1452,6 @@ static int mtkfb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg
 	}
 
 #endif // MTK_FB_OVERLAY_SUPPORT
-
-    case MTKFB_META_RESTORE_SCREEN:
-    {
-        struct fb_var_screeninfo var;
-
-		if (copy_from_user(&var, argp, sizeof(var)))
-			return -EFAULT;
-
-        info->var.yoffset = var.yoffset;
-        init_framebuffer(info);
-
-        return mtkfb_pan_display_impl(&var, info);
-    }
-
 	
     case MTKFB_GET_DEFAULT_UPDATESPEED:
 	{
@@ -1954,17 +1884,6 @@ static void mtkfb_fbinfo_cleanup(struct mtkfb_device *fbdev)
      (((x) & 0xF800) << 8) |    \
      (0xFF << 24)) // opaque
 
-/* Init frame buffer content as 3 R/G/B color bars for debug */
-static int init_framebuffer(struct fb_info *info)
-{
-    void *buffer = info->screen_base +
-                   info->var.yoffset * info->fix.line_length;
-
-    // clean whole frame buffer as black
-    memset(buffer, 0, info->screen_size);
-
-    return 0;
-}
 
 
 /* Free driver resources. Can be called to rollback an aborted initialization
@@ -2669,7 +2588,6 @@ static void mtkfb_shutdown(struct device *pdev)
 
 void mtkfb_clear_lcm(void)
 {
-
 #if 0
 	int i;
     unsigned int layer_status[DDP_OVL_LAYER_MUN]={0};
@@ -2700,7 +2618,7 @@ void mtkfb_clear_lcm(void)
 }
 
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
+#ifdef CONFIG_HAS_EARLYSUSPEND
 static void mtkfb_early_suspend(struct early_suspend *h)
 {
 	int ret=0;
@@ -2736,7 +2654,7 @@ static int mtkfb_resume(struct device *pdev)
     return 0;
 }
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
+#ifdef CONFIG_HAS_EARLYSUSPEND
 static void mtkfb_late_resume(struct early_suspend *h)
 {
 	int ret=0;
@@ -2840,7 +2758,7 @@ static struct platform_driver mtkfb_driver =
     },
 };
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
+#ifdef CONFIG_HAS_EARLYSUSPEND
 static struct early_suspend mtkfb_early_suspend_handler =
 {
 	.level = EARLY_SUSPEND_LEVEL_DISABLE_FB,
@@ -2888,7 +2806,7 @@ int __init mtkfb_init(void)
 		goto exit;
 	}
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
+#ifdef CONFIG_HAS_EARLYSUSPEND
 	register_early_suspend(&mtkfb_early_suspend_handler);
 #endif
 	PanelMaster_Init();
@@ -2906,7 +2824,7 @@ static void __exit mtkfb_cleanup(void)
 
     platform_driver_unregister(&mtkfb_driver);
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) && defined(CONFIG_FB_EARLYSUSPEND)
+#ifdef CONFIG_HAS_EARLYSUSPEND
 	unregister_early_suspend(&mtkfb_early_suspend_handler);
 #endif
 

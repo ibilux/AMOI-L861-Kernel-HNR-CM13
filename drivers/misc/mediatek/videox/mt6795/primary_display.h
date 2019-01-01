@@ -286,7 +286,6 @@ int primary_display_set_lcm_refresh_rate(int fps);
 int primary_display_get_lcm_refresh_rate(void);
 int primary_display_get_hwc_refresh_rate(void);
 int primary_display_get_lcm_max_refresh_rate(void);
-
 void primary_display_idlemgr_kick(char *source, int need_lock);
 void primary_display_idlemgr_enter_idle(int need_lock);
 void primary_display_idlemgr_leave_idle(int need_lock);
