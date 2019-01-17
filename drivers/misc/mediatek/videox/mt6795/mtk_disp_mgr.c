@@ -2093,6 +2093,7 @@ static ssize_t mtk_disp_ld_set_rgb(struct device *dev,
 	if (g < 0 || g > MAX_LUT_SCALE) return -EINVAL;
 	if (b < 0 || b > MAX_LUT_SCALE) return -EINVAL;
 
+
 	cancel_work_sync(&mtk_rgb_work_queue.work);
 	mtk_disp_ld_r = r;
 	mtk_disp_ld_g = g;
@@ -2113,26 +2114,27 @@ static void mtk_disp_rgb_work(struct work_struct *work) {
 
 	mutex_lock(&rgb_wq->lock);
 
-gamma = kzalloc(sizeof(DISP_GAMMA_LUT_T), GFP_KERNEL);
-if( gamma != -1){
-	gamma->hw_id = 0;
-	for (i = 0; i < 512; i++) {
-		gammutR = i * r / PROGRESSION_SCALE;
-		gammutG = i * g / PROGRESSION_SCALE;
-		gammutB = i * b / PROGRESSION_SCALE;
+	gamma = kzalloc(sizeof(DISP_GAMMA_LUT_T), GFP_KERNEL);
+	if( gamma != -1){
+		gamma->hw_id = 0;
+		for (i = 0; i < 512; i++) {
+			gammutR = i * r / PROGRESSION_SCALE;
+			gammutG = i * g / PROGRESSION_SCALE;
+			gammutB = i * b / PROGRESSION_SCALE;
 
-		gamma->lut[i] = GAMMA_ENTRY(gammutR, gammutG, gammutB);
+			gamma->lut[i] = GAMMA_ENTRY(gammutR, gammutG, gammutB);
+		}
+		/*  GRAY DISPLAY BLINKING FIX by TRONX2100 for L861 MTK Helio X10 */
+		msleep(5);
+		/* end fix */
+		DISPMSG("[FB]: Set LIVEDISPLAY \n");
+		ret = primary_display_user_cmd(DISP_IOCTL_SET_GAMMALUT, (unsigned long)gamma);
+
+		kfree(gamma);
 	}
-	
-	msleep(50);
-
-	ret = primary_display_user_cmd(DISP_IOCTL_SET_GAMMALUT, (unsigned long)gamma);
-    
-
-	kfree(gamma);
-}
 	mutex_unlock(&rgb_wq->lock);
 }
+
 #endif
 
 static int __init mtk_disp_mgr_init(void)

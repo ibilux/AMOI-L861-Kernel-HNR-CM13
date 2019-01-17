@@ -5816,6 +5816,12 @@ static MINT32 ISP_WaitIrq(ISP_WAIT_IRQ_STRUCT * WaitIrq)
 	return Ret;
     }
     /*  */
+    
+    /* fix for WaitIsp Timeout Error */
+    if(WaitIrq->Type == 0 && WaitIrq->Timeout == 66){
+		WaitIrq->Timeout = 1000;
+	}
+    
     Timeout = wait_event_interruptible_timeout(
 			IspInfo.WaitQueueHead,
 			ISP_GetIRQState(eIrq, WaitIrq->Type, WaitIrq->UserNumber, WaitIrq->Status),
@@ -9672,7 +9678,3 @@ EXPORT_SYMBOL(ISP_UnregCallback);
 EXPORT_SYMBOL(ISP_MCLK1_EN);
 EXPORT_SYMBOL(ISP_MCLK2_EN);
 EXPORT_SYMBOL(ISP_MCLK3_EN);
-
-
-
-

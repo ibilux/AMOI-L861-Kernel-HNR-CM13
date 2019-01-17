@@ -3349,6 +3349,25 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
 			that this also can be controlled per-workqueue for
 			workqueues visible under /sys/bus/workqueue/.
 
+	workqueue.power_efficient
+			Workqueues can be performance or power-oriented.
+			Currently, most workqueues are bound to the CPU they
+			were created on. This gives good performance (due to
+			cache effects) at the cost of potentially waking up
+			otherwise idle cores (Idle from scheduler's perspective.
+			Which may or may not be physically idle) just to process
+			some work. To save power, we can allow the work to be
+			rescheduled on a core that is already awake.
+
+			Workqueues created with the WQ_UNBOUND flag will allow
+			some power savings.  However, we don't change the
+			default behaviour of the system.  To enable power-saving
+			behaviour, a new config option CONFIG_WQ_POWER_EFFICIENT
+			needs to be turned on. This option can also be
+			overridden by the workqueue.power_efficient boot
+			parameter.
+
+
 	x2apic_phys	[X86-64,APIC] Use x2apic physical mode instead of
 			default x2apic cluster mode on platforms
 			supporting x2apic.

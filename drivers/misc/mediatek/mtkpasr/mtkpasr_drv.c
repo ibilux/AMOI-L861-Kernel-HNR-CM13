@@ -1020,7 +1020,12 @@ void shrink_mtkpasr_all(void)
 	while (page > end_page) {
 		/* To isolate */
 		if (page_count(page) != 0) {
+			
+#ifdef CONFIG_MTKPASR_ALLEXTCOMP
+			if (!mtkpasr_isolate_page(page, 0x0)) {
+#else
 			if (!mtkpasr_isolate_page(page)) {
+#endif
 				list_add(&page->lru, &fromlist);
 				++fromlist_count;
 				++to_be_migrated;
