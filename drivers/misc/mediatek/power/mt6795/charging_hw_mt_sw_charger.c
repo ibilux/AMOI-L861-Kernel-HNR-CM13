@@ -353,8 +353,8 @@ static void check_sw_recharge(void)
 
     //check sw_rechr_vlot
     pmic_read_interface(MT6332_CHR_CON11,&cv_val,MT6332_PMIC_RG_CV_SEL_MASK,MT6332_PMIC_RG_CV_SEL_SHIFT);
-    g_sw_rechr_vlot=4600-(50*cv_val)-100;
 
+    g_sw_rechr_vlot=4600-(50*cv_val)-100;
     if( (g_chr_complete_timer>=30) && (g_sw_rechr_flag==1) )
     {
         pmic_config_interface(0x8D30, 0x1, 0x1, 10);
@@ -544,12 +544,15 @@ static kal_uint32 charging_set_cv_voltage(void *data)
     register_value = charging_parameter_to_value(VBAT_CV_VTH, GETARRAYNUM(VBAT_CV_VTH) ,*(kal_uint32 *)(data));
     g_cv_reg_val = register_value;
 
+
+
     if(*(kal_uint32 *)(data) == BATTERY_VOLT_04_340000_V)
     {
         g_cv_reg_val=0x5;
     }
-
+    
     set_cv_volt();
+ 
 
     return status;
 }
